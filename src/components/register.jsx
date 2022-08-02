@@ -3,17 +3,15 @@ import React, { useState } from 'react'
 import { inputSchemas } from '../schemas';
 import Input from './input'
 import { Routes, Route, Link } from "react-router-dom";
-import fire from './fire';
+import registerHandler from "./fire"
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
-   
-  const [emailError,setEmailError] = useState("")
-  const [passwordError,setPasswordError] = useState("")
-
-
 
     const onSubmit = (values,actions) => {
-      console.log(values)
+      console.log(values.username);
+      registerHandler(values.email,values.password)
+
     }
 
     const {values , handleSubmit, handleBlur , handleChange , errors ,touched} = useFormik({
@@ -27,24 +25,7 @@ function Register() {
         onSubmit,
     })
 
-    const handleSignup = () => {
-      fire
-          .auth()
-          .createUserWithEmailAndPassword(values.email,values.password)
-          .catch(err => {
-              // eslint-disable-next-line default-case
-              switch(err.code){
-                  case "auth/email-already-in-use":
-                  case "auth/invalid-email":
-                      setEmailError(err.message);
-                  break;
-                  case "auth/weak-password":
-                      setPasswordError(err.message);
-                      break;
-                  
-              }
-          })
-  }
+   
   
   
 
@@ -103,8 +84,8 @@ function Register() {
             <input id="remember" type="checkbox" value="" className="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800" required/>
             </div>
             <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">I agree with terms conditions and privacy policy</label>
-        </div>
-        <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' onClick={handleSignup} >Create Account</button>
+        </div>  
+        <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' type='submit' onClick={onSubmit} >Create Account</button>
         <div className='mt-6 text-gray-600'> Already have an account ? <Link to="/" className='text-[#050e1d] px-2 font-bold cursor-pointer'>Sign In</Link></div>
     </form>
   )

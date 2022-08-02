@@ -10,31 +10,6 @@ function SignIn() {
     const [passwordError,setPasswordError] = useState("")
 
 
-    const handleLogin = () => {
-        fire
-            .auth()
-            .signInWithEmailAndPassword(values.email,values.password)
-            .catch(err => {
-                // eslint-disable-next-line default-case
-                switch(err.code){
-                    case "auth/invalid-email":
-                    case "auth/user-disabled":
-                    case "auth/user-not-found":
-                        setEmailError(err.message);
-                    break;
-                    case "auth/wrong-password":
-                        setPasswordError(err.message);
-                        break;
-                    
-                }
-            })
-    };
-
-    
-    const handleLogout = () => {
-        fire.auth().signOut();
-    }
-
 
       const {values , handleSubmit, handleBlur , handleChange} = useFormik({
           initialValues:{
