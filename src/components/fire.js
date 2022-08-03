@@ -43,6 +43,7 @@ export const loginHandler = async (email , password) => {
 export const logOut = async () => {
 
   await signOut(auth)
+  toast.success("Başarılı Bir Şekilde Çıkış Yaptınız")
   return true
 }
 

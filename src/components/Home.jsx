@@ -1,11 +1,26 @@
 import React, { useState } from 'react'
-
 import { useSelector } from 'react-redux'
+import { logOut } from './fire'
+import {logout as logoutReducer} from "../store/authReducer"
+import {useDispatch} from "react-redux";
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Home() {
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {user} = useSelector(state => state.auth)
+
+    const handleLogout = async () => {
+
+        await logOut()
+        dispatch(logoutReducer())
+        navigate("/" , {
+            replace : true
+          })
+    }   
 
     return (
     <div class="w-full h-full flex justify center items-center bg-indigo-600">
@@ -22,7 +37,7 @@ function Home() {
         </p>
       </div>
       <div class="order-3 mt-2 flex-shrink-0 w-full sm:order-2 sm:mt-0 sm:w-auto">
-        <button href="#" class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50"> Log out </button>
+        <button href="#" class="flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-white hover:bg-indigo-50" onClick={handleLogout}> Log out </button>
       </div>
 
     </div>
