@@ -24,11 +24,13 @@ function SignIn() {
       const submit = async e => {
         e.preventDefault()
         const user = await loginHandler(values.email,values.password)
-        console.log(user)
-        dispatch(loginReducer(user));
-        navigate("/home" , {
-          replace : true
-        })
+        if(user){
+          dispatch(loginReducer(user));
+          navigate("/home" , {
+            replace : true
+          })
+        }
+
       }
 
   

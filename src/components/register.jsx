@@ -26,10 +26,12 @@ function Register() {
     const submit = async e => {
       e.preventDefault()
       const user = await registerHandler(values.email,values.password)
-      console.log(user);
-      navigate("/" , {
-        replace : true
-      })
+      if(user){
+        navigate("/" , {
+          replace : true
+        })
+      }
+
 
     }
 
