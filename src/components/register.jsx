@@ -3,16 +3,14 @@ import React, { useState } from 'react'
 import { inputSchemas } from '../schemas';
 import Input from './input'
 import { Routes, Route, Link } from "react-router-dom";
-import registerHandler from "./fire"
+import {registerHandler} from "./fire"
 import { useNavigate } from 'react-router-dom';
+import {useDispatch} from "react-redux";
 
 function Register() {
 
-    const onSubmit = (values,actions) => {
-      console.log(values.username);
-      registerHandler(values.email,values.password)
-
-    }
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const {values , handleSubmit, handleBlur , handleChange , errors ,touched} = useFormik({
         initialValues:{
@@ -22,12 +20,18 @@ function Register() {
             confirmpassword:"",
         },
         validationSchema:inputSchemas,
-        onSubmit,
     })
 
-   
-  
-  
+
+    const submit = async e => {
+      e.preventDefault()
+      const user = await registerHandler(values.email,values.password)
+      console.log(user);
+      navigate("/" , {
+        replace : true
+      })
+
+    }
 
     const inputs = [
         {
@@ -85,7 +89,7 @@ function Register() {
             </div>
             <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">I agree with terms conditions and privacy policy</label>
         </div>  
-        <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' type='submit' onClick={onSubmit} >Create Account</button>
+        <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' type='submit' onClick={submit} >Create Account</button>
         <div className='mt-6 text-gray-600'> Already have an account ? <Link to="/" className='text-[#050e1d] px-2 font-bold cursor-pointer'>Sign In</Link></div>
     </form>
   )

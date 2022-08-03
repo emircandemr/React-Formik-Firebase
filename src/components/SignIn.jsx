@@ -2,32 +2,44 @@ import { useFormik } from 'formik';
 import Input from './input'
 import React, { useState } from 'react'
 import { Routes, Route, Link } from "react-router-dom";
-import fire from './fire';
+import {useDispatch} from "react-redux";
+import {login as loginReducer} from "../store/authReducer"
+import { loginHandler } from './fire';
+import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
-    
-    const [emailError,setEmailError] = useState("")
-    const [passwordError,setPasswordError] = useState("")
 
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
 
       const {values , handleSubmit, handleBlur , handleChange} = useFormik({
           initialValues:{
-              username:"",
               email:"",
               password:"",
-              confirmpassword:"",
           },
       })
+
+
+      const submit = async e => {
+        e.preventDefault()
+        const user = await loginHandler(values.email,values.password)
+        console.log(user)
+        dispatch(loginReducer(user));
+        navigate("/home" , {
+          replace : true
+        })
+      }
+
   
       const inputs = [
           {
             id: 1,
-            name: "username",
-            label: "Username",
+            name: "email",
+            label: "Emmail",
             type: "text",
             placeholder: "Enter your username",
-            value : values.username,
+            value : values.email,
           },
           {
             id: 2,
@@ -52,7 +64,7 @@ function SignIn() {
               </div>
               <label htmlFor="remember" className="ml-2 text-sm font-medium text-gray-900">Remember Me</label>
           </div>
-          <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' onClick={handleLogin}>Login</button>
+          <button className='bg-[#082a4e] text-white py-3 px-4 w-1/2 rounded-xl' onClick={submit} >Login</button>
           <div className='mt-6 text-gray-600'> New Here ? <Link to="/register" className='text-[#050e1d] px-2 font-bold cursor-pointer'>Create an Account</Link></div>
       </form>
     )
