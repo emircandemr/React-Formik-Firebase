@@ -1,8 +1,8 @@
 import { useFormik } from 'formik';
-import React, { useState } from 'react'
+import React from 'react'
 import { inputSchemas } from '../schemas';
 import Input from './input'
-import { Routes, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {registerHandler} from "./fire"
 import { useNavigate } from 'react-router-dom';
 import {useDispatch} from "react-redux";
